@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Field.h"
+#include "Vector.h"
 
 
 //        2
@@ -33,7 +34,9 @@ double transformations[8][8];
 void validateTriCellState();
 
 int computeCollision(int inputHex);
+int computeNewCell(int r, int c, Field* pField);
+Vector computeMomentum(int r, int c, Field* pField);
+
 int getCellAbove(int r, int c, Field* pField);
 int getCellBelow(int r, int c, Field* pField);
 int getCellBehind(int r, int c, Field* pField);
-int computeNewCell(int r, int c, Field* pField);

@@ -84,3 +84,25 @@ int computeNewCell(int r, int c, Field* pField) {
         | ((bottom & 2) << 1) 
         | (side & 1);
 }
+
+Vector computeMomentum(int r, int c, Field* pField) {
+    Vector v;
+    v.x= 0;
+    v.y= 0;
+
+    int value = pField->field[r][c];
+
+    v.x -= (value&1)*100;
+    v.x += ((value&2)>>1)*50;
+    v.x += ((value&4)>>2)*50;
+
+    // v.y += (value&1)*0;
+    v.y += ((value&2)>>1)*87;
+    v.y += ((value&4)>>2)*87;
+
+    if ( (r & 1) == 1 ) {
+        v.x = -v.x;
+    }
+
+    return v;
+}
