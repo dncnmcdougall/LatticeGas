@@ -3,6 +3,7 @@
 
 #include "Field.h"
 #include "TriCell.h"
+#include "HexCell.h"
 #include "Boundary.h"
 
 int nRows, nCols;
@@ -83,18 +84,22 @@ int main(int argc, char** argv) {
     Field* pField1 = NULL;
     Field* pField2 = NULL;
 
-    init( tri_validateCellState, 20, 20, &pField1, &pField2);
+    hex_initialiseCellState();
+
+    init( tri_initialiseCellState, 20, 20, &pField1, &pField2);
 
 
     int itt = 0;
 
     char* filename = calloc(sizeof(unsigned char), 15);
 
-    for( itt = 0; itt < 100; ++itt) {
+    for( itt = 0; itt < 1; ++itt) {
         iterate(itt, pField1, pField2, tri_computeCollision, tri_computeNewCell);
         sprintf(filename, "pics/Itt_%i.png", itt);
         drawField(pField2, filename, tri_computeMomentum, getCellType);
     }
+
+    tri_finaliseCellState();
 
     freeField(pField1);
     freeField(pField2);

@@ -21,7 +21,7 @@ double transformations[][8] = {
 /*7*/ { 0.0  ,0.0   ,0.0   ,0.0  ,0.0   ,0.0  ,0.0  ,1.0}
 };
 
-void tri_validateCellState() {
+void tri_initialiseCellState() {
     int i = 0, j = 0;
     double rowSum=0.0;
     for( i = 0; i < 8; ++i) {
@@ -34,6 +34,10 @@ void tri_validateCellState() {
             break;
         }
     }
+}
+
+void tri_finaliseCellState() {
+    // Do nothing
 }
 
 int tri_computeCollision(int inputHex) {

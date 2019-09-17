@@ -18,7 +18,8 @@
 //  6:  .<
 //  7: -.<
 
-void tri_validateCellState();
+void tri_initialiseCellState();
+void tri_finaliseCellState();
 
 int tri_computeCollision(int inputHex);
 int tri_computeNewCell(int r, int c, Field* pField);
