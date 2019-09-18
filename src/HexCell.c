@@ -12,6 +12,7 @@ int getCell3(int r, int c, Field* pField);
 int getCell4(int r, int c, Field* pField);
 int getCell5(int r, int c, Field* pField);
 int getCell6(int r, int c, Field* pField);
+int countBits(int hex);
 
 typedef struct momList MomentumList;
 
@@ -23,23 +24,45 @@ struct momList {
     int* indices;
 };
 
-MomentumList listHead;
+MomentumList listHeads[6];
+
+void printList( MomentumList* pList) {
+    int i;
+    while ( pList != NULL ) {
+        printf(" list: \n c: %p p: %p, n %p\n v: (%i, %i)\n count: %i\n", (void*)pList, (void*)pList->prev, (void*)pList->next, 
+               pList->v.x, pList->v.y, 
+               pList->count);
+        for( i=0; i < pList->count; ++i ) {
+            printf(" %i,", pList->indices[i]);
+        }
+        printf(" \n");
+        printf(" ----- \n");
+        pList = pList->next;
+    }
+}
 
 void hex_initialiseCellState() {
     Vector v;
+    int i=0;
+    int bitCount=0;
 
-    listHead.next = NULL;
-    listHead.prev = NULL;
-    listHead.count = 0;
-    listHead.v.x = 0;
-    listHead.v.y = 0;
+    for( i = 0; i < 6; ++i ) {
+        listHeads[i].next = NULL;
+        listHeads[i].prev = NULL;
+        listHeads[i].count = 0;
+        listHeads[i].v.x = 0;
+        listHeads[i].v.y = 0;
+    }
+
 
     MomentumList* pCurrent;
 
-    int i = 0;
     for ( i = 0 ; i < 64; ++i ) {
         v = computeMomentum( i );
-        pCurrent = &listHead;
+
+        bitCount = countBits(i);
+
+        pCurrent = &listHeads[bitCount];
 
         while ( pCurrent->next != NULL && !areSame( &pCurrent->v, &v) ) {
             pCurrent = pCurrent->next;
@@ -56,38 +79,41 @@ void hex_initialiseCellState() {
             pCurrent->next->v = v;
             pCurrent->next->indices = malloc(sizeof(int));
             pCurrent->next->indices[0] = i;
-            printf("created new block");
         } else {
             error(1, 0000, "This should not happen\n");
         }
     }
 
-    pCurrent = &listHead;
-    while ( pCurrent->next != NULL ) {
-        printf(" list:\n c: %p p: %p, n %p\n v: (%i, %i)\n inx: %i\n", (void*)pCurrent, (void*)pCurrent->prev, (void*)pCurrent->next, 
-               pCurrent->v.x, pCurrent->v.y, 
-               pCurrent->count);
-        for( i=0; i < pCurrent->count; ++i ) {
-            printf(" %i,", pCurrent->indices[i]);
-        }
-        printf(" \n");
-        pCurrent = pCurrent->next;
+    for ( int j = 0; j < 6; ++j ) {
+        printf(" ----- %i -----\n", j);
+        pCurrent = &listHeads[j];
+        printList( pCurrent);
     }
 }
 
 void hex_finaliseCellState() {
-    MomentumList* pCurrent = listHead.next;
-    while ( pCurrent->next != NULL ) {
-        pCurrent = pCurrent->next;
-        if ( pCurrent->prev ) {
-            free( pCurrent->prev );
-        }
-    }
+    // MomentumList* pCurrent;
+    // int j;
+    // for ( j = 0; j < 6; ++j ) {
+    //     pCurrent = listHeads[j].next;
+    //     while ( pCurrent != NULL ) {
+    //         pCurrent = pCurrent->next;
+    //         if ( pCurrent->prev ) {
+    //             free( pCurrent->prev );
+    //         }
+    //     }
+    // }
 }
 
 int hex_computeCollision(int inputHex) {
     Vector v = computeMomentum( inputHex );
-    MomentumList* pCurrent = &listHead;
+    v.x = -v.x;
+    v.y = -v.y;
+    int bitCount = countBits(inputHex);
+    // printf("Compute collision: %i, |h|: %i, v: (%i,%i)\n", inputHex, bitCount, v.x, v.y);
+    MomentumList* pCurrent = &listHeads[bitCount];
+
+    // printList(pCurrent);
     while ( pCurrent->next != NULL && !areSame( &pCurrent->v, &v) ) {
         pCurrent = pCurrent->next;
     }
@@ -109,14 +135,15 @@ int hex_computeNewCell(int r, int c, Field* pField) {
     int cell5 = getCell5(r, c, pField);
     int cell6 = getCell6(r, c, pField);
 
-    return 
-        (  (( cell1 &  8) << 3 )
-         | (( cell2 & 16) << 3 )
-         | (( cell3 & 32) << 3 )
-         | (( cell4 &  1) >> 3 )
-         | (( cell5 &  2) >> 3 )
-         | (( cell6 &  4) >> 3 )
+return
+        (  (( cell1 &  8) >> 3 )
+         | (( cell2 & 16) >> 3 )
+         | (( cell3 & 32) >> 3 )
+         | (( cell4 &  1) << 3 )
+         | (( cell5 &  2) << 3 )
+         | (( cell6 &  4) << 3 )
         );
+
 }
 
 
@@ -224,5 +251,14 @@ int getCell5(int r, int c, Field* pField) {
             return pField->field[r+1][c];
         }
     }
+}
+
+int countBits(int hex) {
+    int j = 0;
+    int bitCount = 0;
+    for ( j = 0; j <= 6; ++j ) {
+        bitCount += (hex>>j)&1; 
+    }
+    return bitCount;
 }
 

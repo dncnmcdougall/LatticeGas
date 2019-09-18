@@ -17,6 +17,10 @@ LatticeGas: $(o_files)
 run: LatticeGas
 	./LatticeGas
 
+.PHONY: grind
+grind: LatticeGas
+	valgrind ./LatticeGas
+
 .PHONY: clean
 clean: 
 	rm -r ./obj/*

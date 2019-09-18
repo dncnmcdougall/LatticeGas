@@ -12,13 +12,13 @@ CellType getCellType(int r, int c) {
     if (  r == 0 || r == (nRows-1) ) {
         return Mirror;
     } else if ( 
-                  (r > nRows/4 ) 
-               && (c > nCols/4) 
-               && (r < 3*nRows/4) 
-               && (c < 3*nCols/4)
+                  (r > 2*nRows/5 ) 
+               && (c > 2*nCols/5) 
+               && (r < 3*nRows/5) 
+               && (c < 3*nCols/5)
                ) {
         return Mirror;
-    } else if ( (r & 1) == 1 && c == 0 ) {
+    } else if ( c == 0 ) {
         return Fixed;
     } else {
         return Flow;
@@ -26,7 +26,7 @@ CellType getCellType(int r, int c) {
 }
 
 int getFixedValue(int r, int c) {
-    return 6;
+    return 8;
 }
 
 
@@ -63,7 +63,7 @@ void iterate( int itt, Field* pField1, Field* pField2,
                     pField2->field[r][c] = getFixedValue(r,c);
                     break;
                 case Flow:
-                    pField2->field[r][c] = tri_computeCollision( pField1->field[r][c] );
+                    pField2->field[r][c] = computeCollision( pField1->field[r][c] );
                     break;
             }
         }
@@ -73,7 +73,7 @@ void iterate( int itt, Field* pField1, Field* pField2,
     // printFieldInHex(pField2);
     for ( r = 0; r < nRows; ++r) {
         for ( c = 0; c < nCols; ++c) {
-            pField1->field[r][c] = tri_computeNewCell( r,c, pField2);
+            pField1->field[r][c] = computeNewCell( r,c, pField2);
         }
     }
 }
@@ -86,20 +86,20 @@ int main(int argc, char** argv) {
 
     hex_initialiseCellState();
 
-    init( tri_initialiseCellState, 20, 20, &pField1, &pField2);
+    init( hex_initialiseCellState, 100, 100, &pField1, &pField2);
 
 
     int itt = 0;
 
     char* filename = calloc(sizeof(unsigned char), 15);
 
-    for( itt = 0; itt < 1; ++itt) {
-        iterate(itt, pField1, pField2, tri_computeCollision, tri_computeNewCell);
+    for( itt = 0; itt < 1000; ++itt) {
+        iterate(itt, pField1, pField2, hex_computeCollision, hex_computeNewCell);
         sprintf(filename, "pics/Itt_%i.png", itt);
-        drawField(pField2, filename, tri_computeMomentum, getCellType);
+        drawField(pField2, filename, hex_computeMomentum, getCellType);
     }
 
-    tri_finaliseCellState();
+    hex_finaliseCellState();
 
     freeField(pField1);
     freeField(pField2);
