@@ -45,7 +45,8 @@
 void hex_initialiseCellState();
 void hex_finaliseCellState();
 
-int hex_computeCollision(int inputHex);
+int hex_computeCollision(int inputHex, double random);
 int hex_computeNewCell(int r, int c, Field* pField);
 Vector hex_computeMomentum(int r, int c, Field* pField);
 
+Vector hex_computeMomentumFromHex( int value );

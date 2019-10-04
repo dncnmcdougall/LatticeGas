@@ -40,9 +40,9 @@ void tri_finaliseCellState() {
     // Do nothing
 }
 
-int tri_computeCollision(int inputHex) {
+int tri_computeCollision(int inputHex, double random) {
     int i = 0;
-    double rowSum= drand48();
+    double rowSum= random;
     for( i = 0; i < 8; ++i) {
         rowSum -= transformations[inputHex][i];
         if ( rowSum < 0.0 ) {

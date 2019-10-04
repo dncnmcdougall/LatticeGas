@@ -121,13 +121,29 @@ png_bytepp computeRows(Field* pField,
     int cellR, cellC;
     int i, j;
     Vector cellMom;
+    Vector tmp;
     CellType cellT;
 
     png_bytepp pRows = malloc(sizeof(png_bytep)*nPixRows);
 
     for(cellR=0; cellR<pField->nRows; ++cellR) {
         for(cellC=0; cellC<pField->nCols; ++cellC) {
-            cellMom = computeMomentum(cellR, cellC, pField);
+            cellMom.x = 0;
+            cellMom.y = 0;
+            for( i = -2; i <= 2; ++i ) {
+                for( j = -2; j <= 2; ++j ) {
+                    if ( cellR+i < 0 
+                        || cellC+j < 0 
+                        || cellR+i >= pField->nRows
+                        || cellC+j >= pField->nCols
+                       ) {
+                        continue;
+                    }
+                    tmp = computeMomentum(cellR+i, cellC+j, pField);
+                    addVector(&cellMom, &tmp);
+                }
+            }
+            // cellMom = computeMomentum(cellR, cellC, pField);
             cellT = getCellType(cellR, cellC);
             for( i = 0; i < 5; ++i ) {
                 pixR = cellR*5 + i;

@@ -21,7 +21,7 @@
 void tri_initialiseCellState();
 void tri_finaliseCellState();
 
-int tri_computeCollision(int inputHex);
+int tri_computeCollision(int inputHex, double random);
 int tri_computeNewCell(int r, int c, Field* pField);
 Vector tri_computeMomentum(int r, int c, Field* pField);
 

@@ -7,3 +7,7 @@ int areSame(const Vector* pV1, const Vector* pV2) {
         return 0;
     }
 }
+void addVector(Vector* pV1, const Vector* pV2) {
+    pV1->x += pV2->x;
+    pV1->y += pV2->y;
+}
