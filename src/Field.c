@@ -111,7 +111,7 @@ unsigned char getMomentumValue( const Vector* pMom, int r, int c) {
 } 
 png_bytepp computeRows(Field* pField, 
                        Vector (*computeMomentum)(int,int,Field*),
-                       CellType (*getCellType)(int,int)
+                       CellType (*getCellType)(int,int,int)
                        ) {
     int nPixRows = pField->nRows*5; 
     int nPixCols = pField->nCols*5; 
@@ -143,8 +143,10 @@ png_bytepp computeRows(Field* pField,
                     addVector(&cellMom, &tmp);
                 }
             }
+            cellMom.x /= 5;
+            cellMom.y /= 5;
             // cellMom = computeMomentum(cellR, cellC, pField);
-            cellT = getCellType(cellR, cellC);
+            cellT = getCellType(cellR, cellC, 0);
             for( i = 0; i < 5; ++i ) {
                 pixR = cellR*5 + i;
                 if ( cellC == 0 ) {
@@ -184,7 +186,7 @@ void pngErrorCallback (png_structp pPng, png_const_charp png_error) {
 
 void drawField(Field* pField, const char* filename,
                Vector (*computeMomentum)(int,int,Field*),
-               CellType (*getCellType)(int,int)
+               CellType (*getCellType)(int,int,int)
               ) {
 
     png_structp pPng = png_create_write_struct(

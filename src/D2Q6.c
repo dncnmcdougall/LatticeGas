@@ -1,4 +1,4 @@
-#include "HexCell.h"
+#include "D2Q6.h"
 
 #include  "Util.h"
 
@@ -7,38 +7,38 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-Vector hex_computeMomentumFromHex(int value);
-int hex_getCell1(int r, int c, Field* pField);
-int hex_getCell2(int r, int c, Field* pField);
-int hex_getCell3(int r, int c, Field* pField);
-int hex_getCell4(int r, int c, Field* pField);
-int hex_getCell5(int r, int c, Field* pField);
-int hex_getCell6(int r, int c, Field* pField);
+Vector d2q6_computeMomentumFromHex(int value);
+int d2q6_getCell1(int r, int c, Field* pField);
+int d2q6_getCell2(int r, int c, Field* pField);
+int d2q6_getCell3(int r, int c, Field* pField);
+int d2q6_getCell4(int r, int c, Field* pField);
+int d2q6_getCell5(int r, int c, Field* pField);
+int d2q6_getCell6(int r, int c, Field* pField);
 
-MomentumList hex_listHeads[7];
+MomentumList d2q6_listHeads[7];
 
-void hex_initialiseCellState() {
+void d2q6_initialiseCellState() {
     Vector v;
     int i=0;
     int bitCount=0;
 
     for( i = 0; i < 7; ++i ) {
-        hex_listHeads[i].next = NULL;
-        hex_listHeads[i].prev = NULL;
-        hex_listHeads[i].count = 0;
-        hex_listHeads[i].v.x = 0;
-        hex_listHeads[i].v.y = 0;
+        d2q6_listHeads[i].next = NULL;
+        d2q6_listHeads[i].prev = NULL;
+        d2q6_listHeads[i].count = 0;
+        d2q6_listHeads[i].v.x = 0;
+        d2q6_listHeads[i].v.y = 0;
     }
 
 
     MomentumList* pCurrent;
 
     for ( i = 0 ; i < 64; ++i ) {
-        v = hex_computeMomentumFromHex( i );
+        v = d2q6_computeMomentumFromHex( i );
 
         bitCount = countBits(i);
 
-        pCurrent = &hex_listHeads[bitCount];
+        pCurrent = &d2q6_listHeads[bitCount];
 
         if ( pCurrent->count == 0 ) {
             if ( pCurrent->next != NULL ) {
@@ -75,7 +75,7 @@ void hex_initialiseCellState() {
 
     for ( int j = 0; j < 7; ++j ) {
         printf(" ===== %i =====\n", j);
-        pCurrent = &hex_listHeads[j];
+        pCurrent = &d2q6_listHeads[j];
         printList( pCurrent);
         while ( pCurrent != NULL ) {
             for( i=0; i < pCurrent->count; ++i ) {
@@ -89,11 +89,11 @@ void hex_initialiseCellState() {
     }
 }
 
-void hex_finaliseCellState() {
+void d2q6_finaliseCellState() {
     // MomentumList* pCurrent;
     // int j;
     // for ( j = 0; j < 6; ++j ) {
-    //     pCurrent = hex_listHeads[j].next;
+    //     pCurrent = d2q6_listHeads[j].next;
     //     while ( pCurrent != NULL ) {
     //         pCurrent = pCurrent->next;
     //         if ( pCurrent->prev ) {
@@ -103,12 +103,12 @@ void hex_finaliseCellState() {
     // }
 }
 
-int hex_computeCollision(int inputHex, double random) {
-    Vector v = hex_computeMomentumFromHex( inputHex );
+int d2q6_computeCollision(int inputHex, double random) {
+    Vector v = d2q6_computeMomentumFromHex( inputHex );
     v.x = -v.x;
     v.y = -v.y;
     int bitCount = countBits(inputHex);
-    MomentumList* pCurrent = &hex_listHeads[bitCount];
+    MomentumList* pCurrent = &d2q6_listHeads[bitCount];
 
     // printf("Compute collision: %i, |h|: %i, v: (%i,%i)\n", inputHex, bitCount, v.x, v.y);
     // printList(pCurrent);
@@ -126,13 +126,13 @@ int hex_computeCollision(int inputHex, double random) {
     return pCurrent->indices[i];
 }
 
-int hex_computeNewCell(int r, int c, Field* pField) {
-    int cell1 = hex_getCell1(r, c, pField);
-    int cell2 = hex_getCell2(r, c, pField);
-    int cell3 = hex_getCell3(r, c, pField);
-    int cell4 = hex_getCell4(r, c, pField);
-    int cell5 = hex_getCell5(r, c, pField);
-    int cell6 = hex_getCell6(r, c, pField);
+int d2q6_computeNewCell(int r, int c, Field* pField) {
+    int cell1 = d2q6_getCell1(r, c, pField);
+    int cell2 = d2q6_getCell2(r, c, pField);
+    int cell3 = d2q6_getCell3(r, c, pField);
+    int cell4 = d2q6_getCell4(r, c, pField);
+    int cell5 = d2q6_getCell5(r, c, pField);
+    int cell6 = d2q6_getCell6(r, c, pField);
 
     // printf( "1:%d, 2:%d, 3:%d, 4:%d, 5:%d, 6:%d\n", cell1, cell2, cell3, cell4, cell5, cell6);
 
@@ -148,15 +148,15 @@ int hex_computeNewCell(int r, int c, Field* pField) {
 }
 
 
-Vector hex_computeMomentum(int r, int c, Field* pField) {
+Vector d2q6_computeMomentum(int r, int c, Field* pField) {
     int value = pField->field[r][c];
 
-    return hex_computeMomentumFromHex( value );
+    return d2q6_computeMomentumFromHex( value );
 }
 
 // ----- PRIVATE METHODS -----
 
-Vector hex_computeMomentumFromHex( int value ) {
+Vector d2q6_computeMomentumFromHex( int value ) {
     Vector v;
     v.x= 0;
     v.y= 0;
@@ -179,21 +179,21 @@ Vector hex_computeMomentumFromHex( int value ) {
 
     return v;
 }
-int hex_getCell1(int r, int c, Field* pField) {
+int d2q6_getCell1(int r, int c, Field* pField) {
     if ( c < 1 ) {
         return 0;
     } else {
         return pField->field[r][c-1];
     }
 }
-int hex_getCell4(int r, int c, Field* pField) {
+int d2q6_getCell4(int r, int c, Field* pField) {
     if ( c > pField->nCols-2 ) {
         return 0;
     } else {
         return pField->field[r][c+1];
     }
 }
-int hex_getCell2(int r, int c, Field* pField) {
+int d2q6_getCell2(int r, int c, Field* pField) {
     if ( r < 1 ) {
         return 0;
     } else {
@@ -208,7 +208,7 @@ int hex_getCell2(int r, int c, Field* pField) {
         }
     }
 }
-int hex_getCell6(int r, int c, Field* pField) {
+int d2q6_getCell6(int r, int c, Field* pField) {
     if ( r > pField->nRows-2 ) {
         return 0;
     } else {
@@ -223,7 +223,7 @@ int hex_getCell6(int r, int c, Field* pField) {
         }
     }
 }
-int hex_getCell3(int r, int c, Field* pField) {
+int d2q6_getCell3(int r, int c, Field* pField) {
     if ( r < 1 ) {
         return 0;
     } else {
@@ -238,7 +238,7 @@ int hex_getCell3(int r, int c, Field* pField) {
         }
     }
 }
-int hex_getCell5(int r, int c, Field* pField) {
+int d2q6_getCell5(int r, int c, Field* pField) {
     if ( r > pField->nRows-2 ) {
         return 0;
     } else {

@@ -42,11 +42,11 @@
 //   .-- --.--   .-- --.--   .-- --.--   .-- --.--
 //  / \   / \   / \   / \   / \   / \   / \   / \
 
-void hex_initialiseCellState();
-void hex_finaliseCellState();
+void d2q6_initialiseCellState();
+void d2q6_finaliseCellState();
 
-int hex_computeCollision(int inputHex, double random);
-int hex_computeNewCell(int r, int c, Field* pField);
-Vector hex_computeMomentum(int r, int c, Field* pField);
+int d2q6_computeCollision(int inputHex, double random);
+int d2q6_computeNewCell(int r, int c, Field* pField);
+Vector d2q6_computeMomentum(int r, int c, Field* pField);
 
-Vector hex_computeMomentumFromHex( int value );
+Vector d2q6_computeMomentumFromHex( int value );

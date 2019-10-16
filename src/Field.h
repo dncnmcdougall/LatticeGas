@@ -16,5 +16,5 @@ void printFieldInHex(const Field* pField);
 
 void drawField(Field* pField, const char* filename,
                Vector (*computeMomentum)(int,int,Field*),
-               CellType (*getCellType)(int,int)
+               CellType (*getCellType)(int,int,int)
               );

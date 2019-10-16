@@ -6,14 +6,14 @@
 #include "TriCell.h"
 #include "Boundary.h"
 
-// #define HEX
+#define HEX
 #ifdef HEX
-    #include "HexCell.h"
-    #define MACRO_initialiseCellState hex_initialiseCellState
-    #define MACRO_computeCollision hex_computeCollision
-    #define MACRO_computeNewCell hex_computeNewCell
-    #define MACRO_computeMomentum hex_computeMomentum
-    #define MACRO_finaliseCellState hex_finaliseCellState
+    #include "D2Q6.h"
+    #define MACRO_initialiseCellState d2q6_initialiseCellState
+    #define MACRO_computeCollision d2q6_computeCollision
+    #define MACRO_computeNewCell d2q6_computeNewCell
+    #define MACRO_computeMomentum d2q6_computeMomentum
+    #define MACRO_finaliseCellState d2q6_finaliseCellState
 #else
     #include "D2Q9.h"
     #define MACRO_initialiseCellState d2q9_initialiseCellState
@@ -25,7 +25,7 @@
 
 int nRows, nCols;
 
-CellType getCellType(int r, int c) {
+CellType getCellType(int r, int c, int itt) {
     // if (  r == 0 || r == (nRows-1) ) {
     //     return Mirror;
     // } else 
@@ -37,18 +37,22 @@ CellType getCellType(int r, int c) {
                ) {
         return Mirror;
     } else if ( c == 0 ) {
-        return Fixed;
+            return Fixed;
     } else {
         return Flow;
     }
 }
 
-int getFixedValue(int r, int c) {
+int getFixedValue(int r, int c, int itt) {
+        // if (((r ^ itt) & 1)  == 1 ) {
 #ifdef HEX
     return 8;
 #else
     return 32;
 #endif
+        // } else {
+        //     return 0;
+        // }
 }
 
 
@@ -76,13 +80,13 @@ void iterate( int itt, Field* pField1, Field* pField2,
 
     for ( r = 0; r < nRows; ++r) {
         for ( c = 0; c < nCols; ++c) {
-            CellType ct = getCellType(r,c);
+            CellType ct = getCellType(r,c, itt);
             switch( ct) {
                 case Mirror:
                     pField2->field[r][c] = pField1->field[r][c];
                     break;
                 case Fixed:
-                    pField2->field[r][c] = getFixedValue(r,c);
+                    pField2->field[r][c] = getFixedValue(r,c, itt);
                     break;
                 case Flow:
                     pField2->field[r][c] = computeCollision( pField1->field[r][c] , drand48());
@@ -106,7 +110,7 @@ int main(int argc, char** argv) {
     Field* pField1 = NULL;
     Field* pField2 = NULL;
 
-    init( MACRO_initialiseCellState, 200, 200, &pField1, &pField2);
+    init( MACRO_initialiseCellState, 201, 201, &pField1, &pField2);
 
     int itt = 0;
 
@@ -116,16 +120,16 @@ int main(int argc, char** argv) {
     int c = 0;
     for ( r = 0; r < nRows; ++r) {
         for ( c = 0; c < nCols; ++c) {
-            CellType ct = getCellType(r,c);
+            CellType ct = getCellType(r,c, 0);
             switch( ct) {
                 case Mirror:
                 case Fixed:
                     break;
                 case Flow:
 #ifdef HEX
-                    pField1->field[r][c] = 1;
+                    pField1->field[r][c] = 0;
 #else
-                    pField1->field[r][c] = 2;
+                    pField1->field[r][c] = 0;
 #endif
                     break;
             }
