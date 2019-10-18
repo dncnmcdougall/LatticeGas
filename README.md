@@ -3,26 +3,25 @@
 This is a simple implementation of a [lattice gas automation](https://en.wikipedia.org/wiki/Lattice_gas_automaton) simulation.
 The output is written to png.
 
-This was written for two reassons. 1. I have wanted to implement a lattice gas
-for some time. 2. this serves as an exhibit of my c coding style.
-
+This was written for two reasons. 1. I have wanted to implement a lattice gas
+for some time. 2. This serves as an exhibit of my c coding style.
 
 D2Q6 and D2Q9 (2D with 9 states) elements are implemented. Which element is in
 use is changed by defining it in the top of the _src/main.c_ file.
 
 ## Structure:
-the _src_ folder hold all the source. 
-_src/main.c_ is the entry point.
-_obj/_ houses all the object files. It needs to exist.
-_test/_ houses the test executables. It needs to exist for testing.
-_pics/_ houses the putput pictures
-_Makefile_ is the file that defines the build commands.
-_LatticeGas_ is the executable that will be built.
+* _src_ folder hold all the source. 
+* _src/main.c_ is the entry point.
+* _obj/_ houses all the object files. It needs to exist.
+* _test/_ houses the test executables. It needs to exist for testing.
+* _pics/_ houses the output pictures
+* _Makefile_ is the file that defines the build commands.
+* _LatticeGas_ is the executable that will be built.
 
 ## Requirements:
-This uses _gcc_ to build.
-This uses _libpng_ and expects it in the normal build paths.
-This uses _make_ as the build system.
+* _gcc_ is used to build.
+* _libpng_ is used and expects it in the normal build paths.
+* _make_ is used as the build system.
 
 ## Testing
 Testing is very rudimentary and does not use any external libraries.
