@@ -2,7 +2,7 @@
 #include <error.h>
 
 #include  "Field.h"
-#include  "HexCell.h"
+#include  "D2Q6.h"
 #include  "test.h"
 #include  "Util.h"
 
@@ -13,43 +13,43 @@ void test_computeNewCell() {
 
     int newCell = 0;
 
-    newCell = hex_computeNewCell(1,1,pField);
+    newCell = d2q6_computeNewCell(1,1,pField);
     assert_eq( newCell, 0);
 
     pField->field[1][0] = 8;
 
     printFieldInHex(pField);
-    newCell = hex_computeNewCell(1,1,pField);
+    newCell = d2q6_computeNewCell(1,1,pField);
     assert_eq( newCell, 1);
 
     pField->field[0][1] = 16;
 
     printFieldInHex(pField);
-    newCell = hex_computeNewCell(1,1,pField);
+    newCell = d2q6_computeNewCell(1,1,pField);
     assert_eq( newCell, 3);
 
     pField->field[0][2] = 32;
 
     printFieldInHex(pField);
-    newCell = hex_computeNewCell(1,1,pField);
+    newCell = d2q6_computeNewCell(1,1,pField);
     assert_eq( newCell, 7);
 
     pField->field[1][2] = 1;
 
     printFieldInHex(pField);
-    newCell = hex_computeNewCell(1,1,pField);
+    newCell = d2q6_computeNewCell(1,1,pField);
     assert_eq( newCell, 15);
 
     pField->field[2][2] = 2;
 
     printFieldInHex(pField);
-    newCell = hex_computeNewCell(1,1,pField);
+    newCell = d2q6_computeNewCell(1,1,pField);
     assert_eq( newCell, 31);
 
     pField->field[2][1] = 4;
 
     printFieldInHex(pField);
-    newCell = hex_computeNewCell(1,1,pField);
+    newCell = d2q6_computeNewCell(1,1,pField);
     assert_eq( newCell, 63);
 
     freeField(pField);
@@ -62,43 +62,43 @@ void test_computeNewCell2() {
 
     int newCell = 0;
 
-    newCell = hex_computeNewCell(1,1,pField);
+    newCell = d2q6_computeNewCell(1,1,pField);
     assert_eq( newCell, 0);
 
     pField->field[1][0] = 63;
 
     printFieldInHex(pField);
-    newCell = hex_computeNewCell(1,1,pField);
+    newCell = d2q6_computeNewCell(1,1,pField);
     assert_eq( newCell, 1);
 
     pField->field[0][1] = 63;
 
     printFieldInHex(pField);
-    newCell = hex_computeNewCell(1,1,pField);
+    newCell = d2q6_computeNewCell(1,1,pField);
     assert_eq( newCell, 3);
 
     pField->field[0][2] = 63;
 
     printFieldInHex(pField);
-    newCell = hex_computeNewCell(1,1,pField);
+    newCell = d2q6_computeNewCell(1,1,pField);
     assert_eq( newCell, 7);
 
     pField->field[1][2] = 63;
 
     printFieldInHex(pField);
-    newCell = hex_computeNewCell(1,1,pField);
+    newCell = d2q6_computeNewCell(1,1,pField);
     assert_eq( newCell, 15);
 
     pField->field[2][2] = 63;
 
     printFieldInHex(pField);
-    newCell = hex_computeNewCell(1,1,pField);
+    newCell = d2q6_computeNewCell(1,1,pField);
     assert_eq( newCell, 31);
 
     pField->field[2][1] = 63;
 
     printFieldInHex(pField);
-    newCell = hex_computeNewCell(1,1,pField);
+    newCell = d2q6_computeNewCell(1,1,pField);
     assert_eq( newCell, 63);
 
     freeField(pField);
@@ -106,17 +106,17 @@ void test_computeNewCell2() {
 
 void test_computeCollision() {
 
-    hex_initialiseCellState();
+    d2q6_initialiseCellState();
 
     double test = 0.0;
     for( int i =0 ; i < 64; ++i ) {
         for( test = 0.0; test< 1.0; test += 0.1) {
-            Vector v = hex_computeMomentumFromHex( i );
+            Vector v = d2q6_computeMomentumFromHex( i );
             // v.x = -v.x;
             // v.y = -v.y;
             int bitCount = countBits(i);
-            int result = hex_computeCollision(i, test);
-            Vector resultV = hex_computeMomentumFromHex( result );
+            int result = d2q6_computeCollision(i, test);
+            Vector resultV = d2q6_computeMomentumFromHex( result );
             int resultBitCount = countBits(result);
             if ( (resultBitCount != bitCount)
                 && !areSame(&v, &resultV)
@@ -132,13 +132,13 @@ void test_computeCollision() {
 
     }
 
-    hex_finaliseCellState();
+    d2q6_finaliseCellState();
 }
 
 int main(int argc, char** argv) {
 
-    // test_computeNewCell();
-    // test_computeNewCell2();
-    // test_computeCollision();
+    test_computeNewCell();
+    test_computeNewCell2();
+    test_computeCollision();
 
 }

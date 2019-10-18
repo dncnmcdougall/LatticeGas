@@ -6,53 +6,45 @@
 #include "TriCell.h"
 #include "Boundary.h"
 
-#define HEX
-#ifdef HEX
-    #include "D2Q6.h"
-    #define MACRO_initialiseCellState d2q6_initialiseCellState
-    #define MACRO_computeCollision d2q6_computeCollision
-    #define MACRO_computeNewCell d2q6_computeNewCell
-    #define MACRO_computeMomentum d2q6_computeMomentum
-    #define MACRO_finaliseCellState d2q6_finaliseCellState
-#else
-    #include "D2Q9.h"
-    #define MACRO_initialiseCellState d2q9_initialiseCellState
-    #define MACRO_computeCollision d2q9_computeCollision
-    #define MACRO_computeNewCell d2q9_computeNewCell
-    #define MACRO_computeMomentum d2q9_computeMomentum
-    #define MACRO_finaliseCellState d2q9_finaliseCellState
+#define D2Q6
+#ifdef D2Q6
+#include "D2Q6.h"
+#define FIXED_VALUE 8
+#define MACRO_initialiseCellState d2q6_initialiseCellState
+#define MACRO_computeCollision d2q6_computeCollision
+#define MACRO_computeNewCell d2q6_computeNewCell
+#define MACRO_computeMomentum d2q6_computeMomentum
+#define MACRO_finaliseCellState d2q6_finaliseCellState
+#endif
+#ifdef D2Q9
+#include "D2Q9.h"
+#define FIXED_VALUE 32
+#define MACRO_initialiseCellState d2q9_initialiseCellState
+#define MACRO_computeCollision d2q9_computeCollision
+#define MACRO_computeNewCell d2q9_computeNewCell
+#define MACRO_computeMomentum d2q9_computeMomentum
+#define MACRO_finaliseCellState d2q9_finaliseCellState
 #endif
 
 int nRows, nCols;
 
 CellType getCellType(int r, int c, int itt) {
-    // if (  r == 0 || r == (nRows-1) ) {
-    //     return Mirror;
-    // } else 
-        if ( 
-                  (r > 8*nRows/17) 
-               && (c > 8*nCols/17) 
-               && (r < 9*nRows/17) 
-               && (c < 9*nCols/17)
-               ) {
+    if ( 
+        (r > 8*nRows/17) 
+        && (c > 8*nCols/17) 
+        && (r < 9*nRows/17) 
+        && (c < 9*nCols/17)
+       ) {
         return Mirror;
     } else if ( c == 0 ) {
-            return Fixed;
+        return Fixed;
     } else {
         return Flow;
     }
 }
 
 int getFixedValue(int r, int c, int itt) {
-        // if (((r ^ itt) & 1)  == 1 ) {
-#ifdef HEX
-    return 8;
-#else
-    return 32;
-#endif
-        // } else {
-        //     return 0;
-        // }
+    return FIXED_VALUE
 }
 
 
@@ -126,11 +118,7 @@ int main(int argc, char** argv) {
                 case Fixed:
                     break;
                 case Flow:
-#ifdef HEX
                     pField1->field[r][c] = 0;
-#else
-                    pField1->field[r][c] = 0;
-#endif
                     break;
             }
         }
@@ -140,9 +128,9 @@ int main(int argc, char** argv) {
         iterate(itt, pField1, pField2, MACRO_computeCollision, MACRO_computeNewCell);
 
         if( itt%10 == 0 ) {
-        sprintf(filename, "pics/Itt_%i.png", itt);
+            sprintf(filename, "pics/Itt_%i.png", itt);
 
-        drawField(pField2, filename, MACRO_computeMomentum, getCellType);
+            drawField(pField2, filename, MACRO_computeMomentum, getCellType);
         }
     }
 
