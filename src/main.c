@@ -6,7 +6,7 @@
 #include "TriCell.h"
 #include "Boundary.h"
 
-#define D2Q6
+#define D2Q7
 #ifdef D2Q6
 #include "D2Q6.h"
 #define FIXED_VALUE 8
@@ -15,6 +15,15 @@
 #define MACRO_computeNewCell d2q6_computeNewCell
 #define MACRO_computeMomentum d2q6_computeMomentum
 #define MACRO_finaliseCellState d2q6_finaliseCellState
+#endif
+#ifdef D2Q7
+#include "D2Q7.h"
+#define FIXED_VALUE 16
+#define MACRO_initialiseCellState d2q7_initialiseCellState
+#define MACRO_computeCollision d2q7_computeCollision
+#define MACRO_computeNewCell d2q7_computeNewCell
+#define MACRO_computeMomentum d2q7_computeMomentum
+#define MACRO_finaliseCellState d2q7_finaliseCellState
 #endif
 #ifdef D2Q9
 #include "D2Q9.h"
@@ -44,7 +53,7 @@ CellType getCellType(int r, int c, int itt) {
 }
 
 int getFixedValue(int r, int c, int itt) {
-    return FIXED_VALUE
+    return FIXED_VALUE;
 }
 
 
