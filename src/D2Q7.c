@@ -164,19 +164,19 @@ Vector d2q7_computeMomentumFromHex( int value ) {
     v.x= 0;
     v.y= 0;
 
-    v.x -= 100*(( value &  2) );
-    v.x -=  50*(( value &  4) >> 1 );
-    v.x +=  50*(( value &  8) >> 2 );
-    v.x += 100*(( value & 16) >> 3 );
-    v.x +=  50*(( value & 32) >> 4 );
-    v.x -=  50*(( value & 64) >> 5 );
+    v.x -= 100*(( value &  2) >> 1);
+    v.x -=  50*(( value &  4) >> 2 );
+    v.x +=  50*(( value &  8) >> 3 );
+    v.x += 100*(( value & 16) >> 4 );
+    v.x +=  50*(( value & 32) >> 5 );
+    v.x -=  50*(( value & 64) >> 6 );
 
-    // v.y -=   0*(( value &  2) );
-    v.y +=  87*(( value &  4) >> 1 );
-    v.y +=  87*(( value &  8) >> 2 );
-    // v.y +=   0*(( value & 16) >> 3 );
-    v.y -=  87*(( value & 32) >> 4 );
-    v.y -=  87*(( value & 64) >> 5 );
+    // v.y -=   0*(( value &  2) >> 1 );
+    v.y +=  87*(( value &  4) >> 2 );
+    v.y +=  87*(( value &  8) >> 3 );
+    // v.y +=   0*(( value & 16) >> 4 );
+    v.y -=  87*(( value & 32) >> 5 );
+    v.y -=  87*(( value & 64) >> 6 );
 
     // if ( r == c ) printf("Mom: %i: (%i, %i): (x: %i, y: %i)\n", value, r,c,v.x,v.y);
 

@@ -6,7 +6,7 @@
 #include "TriCell.h"
 #include "Boundary.h"
 
-#define D2Q7
+#define D2Q8
 #ifdef D2Q6
 #include "D2Q6.h"
 #define FIXED_VALUE 8
@@ -24,6 +24,15 @@
 #define MACRO_computeNewCell d2q7_computeNewCell
 #define MACRO_computeMomentum d2q7_computeMomentum
 #define MACRO_finaliseCellState d2q7_finaliseCellState
+#endif
+#ifdef D2Q8
+#include "D2Q8.h"
+#define FIXED_VALUE 16
+#define MACRO_initialiseCellState d2q8_initialiseCellState
+#define MACRO_computeCollision d2q8_computeCollision
+#define MACRO_computeNewCell d2q8_computeNewCell
+#define MACRO_computeMomentum d2q8_computeMomentum
+#define MACRO_finaliseCellState d2q8_finaliseCellState
 #endif
 #ifdef D2Q9
 #include "D2Q9.h"
