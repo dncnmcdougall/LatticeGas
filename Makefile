@@ -19,9 +19,17 @@ LatticeGas: ./obj/main.o $(o_files)
 ./test/%: ./src/%.c $(o_files) | ./test/
 	gcc $(CFLAGS) $^ $(LIBS) -o $@
 
-.PHONY: run
-run: LatticeGas
-	./LatticeGas
+.PHONY: runAll
+runAll: LatticeGas
+	./LatticeGas D2Q6
+	./LatticeGas D2Q7
+	./LatticeGas D2Q8
+	./LatticeGas D2Q9
+
+./gifs/%.gif: LatticeGas
+	./LatticeGas $*
+	convert -delay 20 -loop 0 `find ./pics -name "$*_*" | sort -V` ./gifs/$*.gif
+
 
 .PHONY: test
 test: $(test_o_files)
@@ -37,4 +45,9 @@ clean:
 	rm -rf ./obj/*
 	rm -rf ./test/*
 	rm -rf ./LatticeGas
+
+.PHONY: cleanPics
+cleanPics: 
+	rm -f ./pics/*
+	rm -f ./gifs/*
 
