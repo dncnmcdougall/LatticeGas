@@ -6,9 +6,10 @@ The output is written to png.
 This was written for two reasons. 1. I have wanted to implement a lattice gas
 for some time. 2. This serves as an exhibit of my c coding style.
 
-D2Q6, D2Q7, D2Q8 and D2Q9 (2D with 9 states) elements are implemented. Which element is in
-use is changed by defining it in the top of the _src/main.c_ file.
 
+## Elements
+D2Q6, D2Q7, D2Q8 and D2Q9 (2D with 9 states) elements are implemented. Which element is in
+use is changed by parsing in a different command line argument.
 ## D2Q6
 ![D2Q6](./gifs/D2Q6_small.gif)
 ## D2Q7
@@ -24,7 +25,7 @@ use is changed by defining it in the top of the _src/main.c_ file.
 * _obj/_ houses all the object files. It needs to exist.
 * _test/_ houses the test executables. It needs to exist for testing.
 * _pics/_ houses the output pictures
-* _gifs/_ houses the output gifs. Made with the imagemagick's convert utility.
+* _gifs/_ houses the output gifs. Made with the ImageMagick's convert utility.
 * _Makefile_ is the file that defines the build commands.
 * _LatticeGas_ is the executable that will be built.
 
@@ -66,7 +67,7 @@ Flow cells are normal cells that propogate and collide bits in them conserving
 both mass (number of bits) and momentum.
 
 ## Extensions
-There is not damping. THere is no damping of the momentum, so the wake of
+There is no damping. There is no damping of the momentum, so the wake of
 an object becomes infinitly wide, given enough time. Obviously this is
 non-physical. Damping should be introduced. However this si a bit tricky as all
 bits are binary values and so introducing damping while maintaining the binary
