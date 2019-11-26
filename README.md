@@ -9,10 +9,14 @@ for some time. 2. This serves as an exhibit of my c coding style.
 D2Q6, D2Q7, D2Q8 and D2Q9 (2D with 9 states) elements are implemented. Which element is in
 use is changed by defining it in the top of the _src/main.c_ file.
 
-![D2Q6](./gifs/D2Q6.gif)
-![D2Q7](./gifs/D2Q7.gif)
-![D2Q8](./gifs/D2Q8.gif)
-![D2Q9](./gifs/D2Q9.gif)
+## D2Q6
+![D2Q6](./gifs/D2Q6.gif =250x250)
+## D2Q7
+![D2Q7](./gifs/D2Q7.gif =250x250)
+## D2Q8
+![D2Q8](./gifs/D2Q8.gif =250x250)
+## D2Q9
+![D2Q9](./gifs/D2Q9.gif =250x250)
 
 ## Structure:
 * _src_ folder hold all the source. 
