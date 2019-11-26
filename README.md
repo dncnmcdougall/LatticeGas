@@ -10,13 +10,13 @@ D2Q6, D2Q7, D2Q8 and D2Q9 (2D with 9 states) elements are implemented. Which ele
 use is changed by defining it in the top of the _src/main.c_ file.
 
 ## D2Q6
-![D2Q6](./gifs/D2Q6.gif =250x250)
+![D2Q6](./gifs/D2Q6_small.gif)
 ## D2Q7
-![D2Q7](./gifs/D2Q7.gif =250x250)
+![D2Q7](./gifs/D2Q7_small.gif)
 ## D2Q8
-![D2Q8](./gifs/D2Q8.gif =250x250)
+![D2Q8](./gifs/D2Q8_small.gif)
 ## D2Q9
-![D2Q9](./gifs/D2Q9.gif =250x250)
+![D2Q9](./gifs/D2Q9_small.gif)
 
 ## Structure:
 * _src_ folder hold all the source. 

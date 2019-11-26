@@ -29,6 +29,10 @@ runAll: LatticeGas
 ./gifs/%.gif: LatticeGas
 	./LatticeGas $*
 	convert -delay 20 -loop 0 `find ./pics -name "$*_*" | sort -V` ./gifs/$*.gif
+	convert -size 300x300 -delay 20 -loop 0 `find ./pics -name "$*_*" | sort -V` ./gifs/$*_small.gif
+
+./gifs/%_small.gif: ./gifs/%.gif
+	convert -resize 300x300 -delay 20 -loop 0 `find ./pics -name "$*_*" | sort -V` ./gifs/$*_small.gif
 
 
 .PHONY: test
